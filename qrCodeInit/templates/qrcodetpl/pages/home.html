@@ -7,21 +7,11 @@
 
   <main>
     <section class="form-section">
-      <form method="post">
-        <input type="hidden" name="csrfmiddlewaretoken" value="...">
-        
-        <label for="codigo">Código Base:</label>
-        <input type="text" id="codigo" name="codigo" required placeholder="Ex: tpx-amado" />
-
-        <label for="quantidade">Quantidade:</label>
-        <input type="number" id="quantidade" name="quantidade" min="1" required placeholder="Ex: 65" />
-
-        <button type="submit">Gerar QR Codes</button>
-      </form>
+      {% include "qrcodetpl/partials/qrcode_main.html" %}
     </section>
 
     <section id="qrcodes" class="qrcode-grid">
-      <!-- Exiba aqui as imagens dos QR Codes usando <img src="data:image/png;base64,..."> -->
+      
     </section>
   </main>
 
