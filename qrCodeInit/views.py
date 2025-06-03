@@ -4,7 +4,7 @@ import io
 import zipfile
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
-
+from .models import GeracaoQRCode
 
 """
 Cria o qr code
@@ -17,6 +17,12 @@ def gerar_zip_qrcodes(request):
     if request.method == 'POST':
         codigo_base = request.POST.get('codigo')
         quantidade = int(request.POST.get('quantidade'))
+
+        try:
+            nova_geracao = GeracaoQRCode(codigo=codigo_base, quantidade=quantidade)
+            nova_geracao.save()
+        except Exception as e:
+            print("Erro ao enviar dado: {e}")
 
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
