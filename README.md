@@ -22,8 +22,8 @@ Este aplicativo web permite que os usuários gerem uma série de QR codes único
 ## 💻 Tecnologias Utilizadas
 
 * **Backend:** Python com o framework Django
-* **Frontend:** HTML, CSS (e possivelmente JavaScript para interatividade)
-* **Geração de QR Code:** (Você pode adicionar a biblioteca Python específica que usou, ex: `qrcode`)
+* **Frontend:** HTML e CSS
+* **Geração de QR Code: Lib qrcode
 * **Hospedagem:** Fly.io
 
 ## 🚀 Como Usar (No Aplicativo Web)
