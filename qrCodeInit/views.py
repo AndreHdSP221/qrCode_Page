@@ -27,7 +27,7 @@ def gerar_zip_qrcodes(request):
         zip_buffer = io.BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
             for i in range(1, quantidade + 1):
-                codigo_completo = f"{codigo_base}-{str(i).zfill(4)}"
+                codigo_completo = f"{codigo_base}-{str(i).zfill(6)}"
                 qr = qrcode.make(codigo_completo)
 
                 img_io = io.BytesIO()
