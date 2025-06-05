@@ -41,7 +41,7 @@ Se você deseja executar este projeto localmente para desenvolvimento ou teste:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [[URL_DO_SEU_REPOSITORIO_GITHUB]](https://github.com/AndreHdSP221/qrCode_Page.git)
+    git clone https://github.com/AndreHdSP221/qrCode_Page.git
     cd qrCode_Page
     ```
 
