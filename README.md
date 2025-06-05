@@ -23,7 +23,7 @@ Este aplicativo web permite que os usuários gerem uma série de QR codes único
 
 * **Backend:** Python com o framework Django
 * **Frontend:** HTML e CSS
-* **Geração de QR Code: Lib qrcode
+* **Libs: io (Lib): Utilizado para manipular os dados binários das imagens diretamente na memória RAM, sem a necessidade de salvar arquivos temporários no disco. zipfile (Lib): Responsável por compactar os arquivos de QR Codes em um único arquivo .zip. qrcode (Lib): Gera os qrCodes.
 * **Hospedagem:** Fly.io
 
 ## 🚀 Como Usar (No Aplicativo Web)
