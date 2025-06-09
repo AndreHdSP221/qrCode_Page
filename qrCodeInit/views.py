@@ -1,47 +1,61 @@
-import qrcode
+
 from django.shortcuts import render
-import io
-import zipfile
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-from .models import GeracaoQRCode
+from django.contrib import messages
+from django.http import HttpRequest, HttpResponse
+from .forms import GeradorAdesivosForm, GeradorQrCodeZipForm
+from .tasks import criar_pdf_adesivos_async, criar_zip_qrcodes_async
 
-"""
-Cria o qr code
+def gerar_adesivos_arbo(request: HttpRequest) -> HttpResponse:
+    template_name = 'qrcodetpl/pages/pageadesivoarbo.html'
 
-Vou estudar formas de deixar isso mais rapido para
-grandes quantidades de qr codes
-"""
-@csrf_exempt
-def gerar_zip_qrcodes(request):
     if request.method == 'POST':
-        codigo_base = request.POST.get('codigo')
-        quantidade = int(request.POST.get('quantidade'))
+        form = GeradorAdesivosForm(request.POST, request.FILES)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            
+            logo_file = cleaned_data.pop('logo') 
+            
+            logo_content: bytes = logo_file.read()
+            
+            user_id = request.user.id if request.user.is_authenticated else None
 
-        try:
-            nova_geracao = GeracaoQRCode(codigo=codigo_base, quantidade=quantidade)
-            nova_geracao.save()
-        except Exception as e:
-            print("Erro ao enviar dado: {e}")
+            criar_pdf_adesivos_async.delay(
+                form_data=cleaned_data, 
+                logo_content=logo_content, 
+                user_id=user_id
+            )
+            
+            messages.success(request, 'Sua solicitação foi recebida! O arquivo PDF está sendo gerado.')
+            return render(request, template_name, {'form': GeradorAdesivosForm()})
+    else:
+        form = GeradorAdesivosForm()
+        
+    return render(request, template_name, {'form': form})
 
-        zip_buffer = io.BytesIO()
-        with zipfile.ZipFile(zip_buffer, 'w') as zip_file:
-            for i in range(1, quantidade + 1):
-                codigo_completo = f"{codigo_base}-{str(i).zfill(6)}"
-                qr = qrcode.make(codigo_completo)
+def gerar_zip_qrcodes(request: HttpRequest) -> HttpResponse:
+    template_name = 'qrcodetpl/pages/qrCodeSequencial.html'
+    
+    if request.method == 'POST':
+        form = GeradorQrCodeZipForm(request.POST)
 
-                img_io = io.BytesIO()
-                qr.save(img_io, format='PNG')
-                img_io.seek(0)
+        if form.is_valid():
+            cleaned_data = form.cleaned_data
+            user_id = request.user.id if request.user.is_authenticated else None
 
-                nome_arquivo = f"{codigo_completo}.png"
-                zip_file.writestr(nome_arquivo, img_io.read())
+            criar_zip_qrcodes_async.delay(
+                form_data=cleaned_data,
+                user_id=user_id
+            )
 
-        zip_buffer.seek(0)
+            messages.success(
+                request,
+                'Sua solicitação foi recebida! O arquivo .ZIP com os QR Codes está sendo '
+                'gerado. Você será notificado em breve.'
+            )
+            
+            return render(request, template_name, {'form': GeradorQrCodeZipForm()})
 
-        # Responsavel por enviar o arquivo .zip pro user
-        response = HttpResponse(zip_buffer, content_type='application/zip')
-        response['Content-Disposition'] = f'attachment; filename="{codigo_base}_qrcodes.zip"'
-        return response
+    else:
+        form = GeradorQrCodeZipForm()
 
-    return render(request, 'qrcodetpl/pages/home.html')
+    return render(request, template_name, {'form': form})

@@ -1,0 +1,14 @@
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <label for="id_codigo_base">Código Base</label> <input type="text" id="id_codigo_base" name="codigo_base" required placeholder="Ex: tpx-amado" /> <label for="id_quantidade">Quantidade</label>
+    <input type="number" id="id_quantidade" name="quantidade" min="1" required placeholder="Ex: 65" />
+
+    <label for="id_logo" class="file-upload-label"> <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 4h14v-2H5z"/>
+        </svg>
+        <span>Escolher Imagem</span>
+    </label>
+    <input type="file" id="id_logo" name="logo" accept="image/png, image/jpeg" /> <button type="submit">Gerar Adesivos</button> </form>
+    
+</form>

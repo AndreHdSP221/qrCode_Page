@@ -6,4 +6,12 @@ class GeracaoQRCode(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"{self.codigo} ({self.quantidade} QRs)"
+        return self.codigo
+
+class adesivosArbo(models.Model):
+    codigo = models.CharField(max_length=50)
+    quantidade = models.PositiveIntegerField()
+    data_criacao = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.codigo
