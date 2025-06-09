@@ -1,6 +1,7 @@
 from django import forms
 
 class GeradorAdesivosForm(forms.Form):
+
     logo = forms.ImageField(
         label="Logo da Empresa",
         help_text="Envie um arquivo de imagem (PNG, JPG, etc.)",
@@ -21,6 +22,7 @@ class GeradorAdesivosForm(forms.Form):
     )
 
 class GeradorQrCodeZipForm(forms.Form):
+
     codigo_base = forms.CharField(
         label="Código Base",
         max_length=100,
@@ -30,7 +32,7 @@ class GeradorQrCodeZipForm(forms.Form):
     quantidade = forms.IntegerField(
         label="Quantidade de QR Codes",
         min_value=1,
-        max_value=10000,
+        max_value=10000, # Limite de segurança
         required=True,
         help_text="O número de QR Codes a serem gerados."
     )
