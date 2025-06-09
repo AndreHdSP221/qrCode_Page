@@ -22,8 +22,8 @@ Este aplicativo web permite que os usuários gerem uma série de QR codes único
 ## 💻 Tecnologias Utilizadas
 
 * **Backend:** Python com o framework Django
-* **Frontend:** HTML, CSS (e possivelmente JavaScript para interatividade)
-* **Geração de QR Code:** (Você pode adicionar a biblioteca Python específica que usou, ex: `qrcode`)
+* **Frontend:** HTML e CSS
+* **Libs: io (Lib): Utilizado para manipular os dados binários das imagens diretamente na memória RAM, sem a necessidade de salvar arquivos temporários no disco. zipfile (Lib): Responsável por compactar os arquivos de QR Codes em um único arquivo .zip. qrcode (Lib): Gera os qrCodes.
 * **Hospedagem:** Fly.io
 
 ## 🚀 Como Usar (No Aplicativo Web)
@@ -41,8 +41,8 @@ Se você deseja executar este projeto localmente para desenvolvimento ou teste:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [URL_DO_SEU_REPOSITORIO_GITHUB]
-    cd [NOME_DA_PASTA_DO_PROJETO]
+    git clone https://github.com/AndreHdSP221/qrCode_Page.git
+    cd qrCode_Page
     ```
 
 2.  **Crie e ative um ambiente virtual:**
