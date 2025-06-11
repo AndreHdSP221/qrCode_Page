@@ -1,8 +1,9 @@
 <form method="post">
-    <input type="hidden" name="csrfmiddlewaretoken" value="...">
+
+    {% csrf_token %}
 
     <label for="codigo">Código Base:</label>
-    <input type="text" id="codigo" name="codigo" required placeholder="Ex: tpx-amado" />
+    <input type="text" id="codigo" name="codigo_base" required placeholder="Ex: tpx-amado" />
 
     <label for="quantidade">Quantidade:</label>
     <input type="number" id="quantidade" name="quantidade" min="1" required placeholder="Ex: 65" />
