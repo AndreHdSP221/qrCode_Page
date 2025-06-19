@@ -46,7 +46,6 @@ def gerar_adesivos_arbo(request):
                     {'form': form, 'error': str(e)},
                 )
 
-            # --- Lógica de Geração de Imagem Adaptada ---
             caminho_base_sticker = finders.find('images/Sticker_Dominus.png')
             caminho_da_fonte = finders.find('fonts/MYRIADPRO-BOLDCOND.OTF')
 
@@ -62,21 +61,17 @@ def gerar_adesivos_arbo(request):
             logo_cidade_pil = Image.open(cidade_logo_file).convert("RGBA")
 
             for i in range(quantidade):
-                # Carrega a imagem de base para cada adesivo para não modificar a original
                 imagem_base = Image.open(caminho_base_sticker).convert("RGBA")
                 
-                # 1. Gera o código e o QR Code
                 codigo_atual = f"{prefixo}{str(numero_inicial + i).zfill(padding)}"
                 qr_img_pil = qrcode.make(codigo_atual, box_size=10, border=2).convert('RGBA')
 
-                # 2. Cola o QR Code na imagem base (lógica de pastqrCode)
                 qr_largura, qr_altura = qr_img_pil.size
                 novo_tamanho_qr = (round(qr_largura * 1.3), round(qr_altura * 1.3))
                 qr_img_redimensionada = qr_img_pil.resize(novo_tamanho_qr, resample=Image.Resampling.BICUBIC)
                 posicao_qr = (-5, 138)
                 imagem_base.paste(qr_img_redimensionada, posicao_qr, qr_img_redimensionada)
 
-                # 3. Cola o logo da cidade na imagem base (lógica de pastLogoCity)
                 marge_x_logo = 35
                 marge_y_logo = 400
                 posicao_x_logo = imagem_base.width - logo_cidade_pil.width - marge_x_logo
@@ -84,7 +79,6 @@ def gerar_adesivos_arbo(request):
                 posicao_logo = (posicao_x_logo, posicao_y_logo)
                 imagem_base.paste(logo_cidade_pil, posicao_logo, logo_cidade_pil)
 
-                # 4. Escreve o texto na imagem base (lógica de drawTextInImage)
                 draw = ImageDraw.Draw(imagem_base)
                 try:
                     font_size = 36
@@ -104,13 +98,11 @@ def gerar_adesivos_arbo(request):
 
                 draw.text(posicao_texto, codigo_atual, font=fonte, fill="white")
 
-                # Salva a imagem finalizada no buffer
                 buffer = io.BytesIO()
                 imagem_base.save(buffer, format='PNG')
                 buffer.seek(0)
                 imagens_adesivos_buffers.append(buffer)
 
-            # --- Lógica de Geração de PDF (inalterada) ---
             response = HttpResponse(content_type='application/pdf')
             response['Content-Disposition'] = 'attachment; filename="adesivos_arbo.pdf"'
             
