@@ -3,7 +3,7 @@ from django import forms
 class GeradorQrCodeZipForm(forms.Form):
     codigo_base = forms.CharField(
         label='Código Base',
-        max_length=100,
+        max_length=25,
         widget=forms.TextInput(
             attrs={'class': 'form-control', 'placeholder': 'Ex: EVENTO-SP'}
         ),
