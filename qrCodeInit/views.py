@@ -1,32 +1,27 @@
 import io
 import re
+import os
 import zipfile
-
 import qrcode
-from django.contrib import messages
-from django.http import HttpRequest, HttpResponse
-from django.shortcuts import render
 from PIL import Image, ImageDraw, ImageFont
+
+from django.shortcuts import render
+from django.http import HttpResponse, HttpRequest
+from django.conf import settings
+from django.contrib import messages
+
+from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import letter
 from reportlab.lib.utils import ImageReader
-from reportlab.pdfgen import canvas
 
-from .forms import GeradorQrCodeZipForm, GerarAdesivoArboForm
-
+from .forms import GerarAdesivoArboForm, GeradorQrCodeZipForm
 
 def extrair_prefixo_e_numero(codigo):
     match = re.match(r'^(.*?)(\d+)$', codigo)
     if not match:
-        raise ValueError(
-            "O formato do código inicial é inválido. Deve terminar com números."
-        )
-
+        raise ValueError("O formato do código inicial é inválido. Deve terminar com números.")
     prefixo, numero_str = match.groups()
-    numero = int(numero_str)
-    padding = len(numero_str)
-
-    return prefixo, numero, padding
-
+    return prefixo, int(numero_str), len(numero_str)
 
 def gerar_adesivos_arbo(request):
     if request.method == 'POST':
@@ -37,75 +32,73 @@ def gerar_adesivos_arbo(request):
             cidade_logo_file = form.cleaned_data['cidade_logo']
 
             try:
-                prefixo, numero_inicial, padding = extrair_prefixo_e_numero(
-                    codigo_inicial
-                )
+                prefixo, numero_inicial, padding = extrair_prefixo_e_numero(codigo_inicial)
             except ValueError as e:
-                return render(
-                    request,
-                    'qrcodetpl/pages/pageadesivoarbo.html',
-                    {'form': form, 'error': str(e)},
-                )
+                messages.error(request, str(e))
+                return render(request, 'qrcodetpl/pages/pageadesivoarbo.html', {'form': form})
+
+            try:
+                path_base_image = os.path.join(settings.BASE_DIR, 'qrcode/images/Sticker_Dominus.png')
+                path_font_code = os.path.join(settings.BASE_DIR, 'qrcode/fonts/Myriadpro/MYRIADPRO-BOLDCOND.OTF')
+                
+                imagem_base_original = Image.open(path_base_image).convert("RGBA")
+                font_code = ImageFont.truetype(path_font_code, 26)
+            except FileNotFoundError as e:
+                messages.error(request, f"Erro crítico: Arquivo estático não encontrado: {e.filename}")
+                return render(request, 'qrcodetpl/pages/pageadesivoarbo.html', {'form': form})
+
+            try:
+                logo_cidade = Image.open(cidade_logo_file).convert("RGBA")
+            except Exception as e:
+                messages.error(request, f"Erro ao processar a imagem da cidade: {e}")
+                return render(request, 'qrcodetpl/pages/pageadesivoarbo.html', {'form': form})
 
             imagens_adesivos_buffers = []
 
             for i in range(quantidade):
+                adesivo_atual = imagem_base_original.copy()
                 codigo_atual = f"{prefixo}{str(numero_inicial + i).zfill(padding)}"
-                qr_img = qrcode.make(codigo_atual, box_size=10, border=2).convert('RGB')
-                logo_cidade = Image.open(cidade_logo_file).convert("RGBA")
+                qr_img = qrcode.make(codigo_atual, border=1).convert("RGBA").resize((280, 280))
 
-                qr_img = qr_img.resize((250, 250))
-                logo_cidade = logo_cidade.resize((100, 100))
+                logo_cidade_resized = logo_cidade.resize((450, 110))
+                adesivo_atual.paste(logo_cidade_resized, (380, 45), logo_cidade_resized)
+                adesivo_atual.paste(qr_img, (50, 180), qr_img)
 
-                draw = ImageDraw.Draw(logo_cidade)
-                try:
-                    font = ImageFont.truetype("arial.ttf", 24)
-                except IOError:
-                    font = ImageFont.load_default()
-                draw.text((50, 320), codigo_atual, font=font, fill="black")
+                draw = ImageDraw.Draw(adesivo_atual)
+                draw.text((65, 420), codigo_atual, font=font_code, fill="white")
 
                 buffer = io.BytesIO()
-                logo_cidade.save(buffer, format='PNG')
+                adesivo_atual.save(buffer, format='PNG')
                 buffer.seek(0)
                 imagens_adesivos_buffers.append(buffer)
                 
             response = HttpResponse(content_type='application/pdf')
-            response['Content-Disposition'] = (
-                'attachment; filename="adesivos_arbo.pdf"'
-            )
+            response['Content-Disposition'] = 'attachment; filename="adesivos_arbo.pdf"'
 
             pdf_canvas = canvas.Canvas(response, pagesize=letter)
             width, height = letter
-            x_offset, y_offset, margin = 50, height - 220, 20
-            adesivo_width, adesivo_height = 250, 180
+            x_offset, y_offset, margin = 40, height - 120, 15
+            adesivo_width, adesivo_height = 250, 125 
             adesivos_por_pagina = 8
 
             for idx, img_buffer in enumerate(imagens_adesivos_buffers):
                 if idx > 0 and idx % adesivos_por_pagina == 0:
                     pdf_canvas.showPage() 
-                    y_offset = height - 220 
+                    y_offset = height - 120
 
                 col = idx % 2
                 row = (idx // 2) % 4
                 x = x_offset + col * (adesivo_width + margin)
                 y = y_offset - row * (adesivo_height + margin)
 
-                pdf_canvas.drawImage(
-                    ImageReader(img_buffer),
-                    x,
-                    y,
-                    width=adesivo_width,
-                    height=adesivo_height,
-                )
+                pdf_canvas.drawImage(ImageReader(img_buffer), x, y, width=adesivo_width, height=adesivo_height, mask='auto')
 
             pdf_canvas.save()
             return response
     else:
         form = GerarAdesivoArboForm()
 
-    return render(
-        request, 'qrcodetpl/pages/pageadesivoarbo.html', {'form': form}
-    )
+    return render(request, 'qrcodetpl/pages/pageadesivoarbo.html', {'form': form})
 
 
 def gerar_zip_qrcodes(request: HttpRequest) -> HttpResponse:
@@ -120,9 +113,8 @@ def gerar_zip_qrcodes(request: HttpRequest) -> HttpResponse:
         messages.error(request, 'Dados inválidos. Por favor, verifique os campos.')
         return render(request, template_name, {'form': form})
 
-    cleaned_data = form.cleaned_data
-    codigo_base = cleaned_data['codigo_base']
-    quantidade = cleaned_data['quantidade']
+    codigo_base = form.cleaned_data['codigo_base'].strip().replace(" ", "_").upper()
+    quantidade = form.cleaned_data['quantidade']
 
     try:
         zip_buffer = io.BytesIO()
@@ -136,11 +128,8 @@ def gerar_zip_qrcodes(request: HttpRequest) -> HttpResponse:
                 zip_file.writestr(f"{codigo_completo}.png", img_io.read())
 
         zip_buffer.seek(0)
-
         response = HttpResponse(zip_buffer, content_type='application/zip')
-        response['Content-Disposition'] = (
-            f'attachment; filename="qrcodes_{codigo_base}.zip"'
-        )
+        response['Content-Disposition'] = f'attachment; filename="qrcodes_{codigo_base}.zip"'
         return response
 
     except Exception as e:
