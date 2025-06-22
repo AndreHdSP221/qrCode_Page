@@ -8,7 +8,6 @@ from django.shortcuts import render
 
 from .forms import GeradorQrCodeZipForm
 
-
 def gerar_zip_qrcodes(request: HttpRequest) -> HttpResponse:
     template_name = 'qrcodetpl/pages/qrCodeSequencial.html'
 

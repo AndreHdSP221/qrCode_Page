@@ -1,0 +1,28 @@
+{% load static %}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="{% static 'global/css/styles.css' %}">
+{% block style %}
+
+{% endblock style %}
+
+<title>{% block title %}{% endblock title %}</title>
+
+<body>
+  <header>
+    <div class="header-container">
+      <h1>{% block header %}{% endblock header %}</h1>
+    </div>
+  </header>
+
+  <main>
+    {% block content %}
+    
+    {% endblock content %}    
+  </main>
+
+  <footer>
+    <p>&copy; 2025 Dominus Química • Desenvolvido por André Henrique</p>
+  </footer>
+</body>
+</html>

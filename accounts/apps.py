@@ -1,5 +1,6 @@
 from django.apps import AppConfig
 
-class qrCodeInitConfig(AppConfig):
+
+class AccountsConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'qrCodeInit'
+    name = 'accounts'

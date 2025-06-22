@@ -1,16 +1,25 @@
-{% include "qrcodetpl/partials/head.html" %}
+{% extends "global/html/basetemplate.html" %}
+{% load static %}
+
+{% block style %}
+  <link rel="stylesheet" href="{% static 'qrcodeinit/css/styles.css' %}">
+{% endblock style %}
+
+{% block title %}Gerador QRs{% endblock title %}
 
 <body>
   <header>
     <div class="header-container">
-      <h1>Gerador de QR Codes Sequenciais</h1>
+      {% block header %}Gerador de QR Codes Sequenciais{% endblock header %}
     </div>
   </header>
 
   <main>
-    <section class="form-section">
-      {% include "qrcodetpl/partials/qrcode_main.html" %}
-    </section>
+    {% block content %}
+      <section class="form-section">
+        {% include "qrcodetpl/partials/qrcode_main.html" %}
+      </section>
+    {% endblock content %}
   </main>
 
   <footer>
