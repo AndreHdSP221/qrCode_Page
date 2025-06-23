@@ -1,5 +1,7 @@
 # Gerador de QR Codes Sequenciais 🚥
 
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+
 Bem-vindo ao Gerador de QR Codes Sequenciais! Este é um projeto Django desenvolvido para criar múltiplos QR codes de forma rápida e fácil, baseados em um código inicial e uma sequência numérica.
 
 **🚀 Link para o aplicativo:** [https://qrcodesequenciais.fly.dev/](https://qrcodesequenciais.fly.dev/)
@@ -12,6 +14,14 @@ Bem-vindo ao Gerador de QR Codes Sequenciais! Este é um projeto Django desenvol
 
 Este aplicativo web permite que os usuários gerem uma série de QR codes únicos. O usuário fornece um "código base" (um prefixo) e uma "quantidade". O aplicativo então cria QR codes que combinam o código base com um número sequencial (ex: `CODIGOBASE-000001`, `CODIGOBASE-000002`, etc.). Os QR codes gerados são então disponibilizados para o usuário, prontos para download e utilização.
 
+## 🚧 Status do Projeto e Próximos Passos
+
+Este projeto está em **desenvolvimento ativo**. Novas funcionalidades estão sendo planejadas e serão implementadas em breve para torná-lo uma ferramenta mais completa. Os próximos passos incluem:
+
+* **Sistema de Autenticação**: Implementação de um sistema de **login e logout** para que os usuários possam gerenciar seus QR codes.
+* **Menu de Navegação**: Adição de um **menu lateral** para facilitar o acesso às diferentes funcionalidades da aplicação.
+* **Novas Opções de QR Code**: Expansão para incluir outros tipos de geradores, como QR codes para vCards, redes Wi-Fi, links diretos, e mais.
+
 ## ✨ Funcionalidades Principais
 
 * Interface web simples e intuitiva para inserção de dados.
@@ -23,7 +33,10 @@ Este aplicativo web permite que os usuários gerem uma série de QR codes único
 
 * **Backend:** Python com o framework Django
 * **Frontend:** HTML e CSS
-* **Libs: io (Lib): Utilizado para manipular os dados binários das imagens diretamente na memória RAM, sem a necessidade de salvar arquivos temporários no disco. zipfile (Lib): Responsável por compactar os arquivos de QR Codes em um único arquivo .zip. qrcode (Lib): Gera os qrCodes.
+* **Libs:**
+    * `io`: Utilizado para manipular os dados binários das imagens diretamente na memória RAM, sem a necessidade de salvar arquivos temporários no disco.
+    * `zipfile`: Responsável por compactar os arquivos de QR Codes em um único arquivo `.zip`.
+    * `qrcode`: A biblioteca principal para a geração dos QR Codes.
 * **Hospedagem:** Fly.io
 
 ## 🚀 Como Usar (No Aplicativo Web)
@@ -41,7 +54,7 @@ Se você deseja executar este projeto localmente para desenvolvimento ou teste:
 
 1.  **Clone o repositório:**
     ```bash
-    git clone https://github.com/AndreHdSP221/qrCode_Page.git
+    git clone [https://github.com/AndreHdSP221/qrCode_Page.git](https://github.com/AndreHdSP221/qrCode_Page.git)
     cd qrCode_Page
     ```
 
@@ -55,7 +68,7 @@ Se você deseja executar este projeto localmente para desenvolvimento ou teste:
     ```
 
 3.  **Instale as dependências:**
-    (Certifique-se de que você tem um arquivo `requirements.txt` em seu projeto)
+    (Recomendamos o uso do `pip-tools` para gerenciar as dependências)
     ```bash
     pip install -r requirements.txt
     ```
