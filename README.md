@@ -43,7 +43,7 @@ Este projeto está em **desenvolvimento ativo**. Novas funcionalidades estão se
 
 1.  Acesse o aplicativo através do link: [https://qrcodesequenciais.fly.dev/](https://qrcodesequenciais.fly.dev/)
 2.  No formulário apresentado:
-    * Insira o **Código Base** desejado (ex: `EVENTO-ABC-LOTE1-`).
+    * Insira o **Código Base** desejado (ex: `EVENTO-ABC-LOTE1`).
     * Insira a **Quantidade** de QR codes que precisa gerar (ex: `50`).
 3.  Clique no botão "Gerar QR Codes".
 4.  Aguarde o processamento. Os QR codes sequenciais serão gerados e apresentados na página, prontos para serem baixados.
@@ -73,7 +73,7 @@ Se você deseja executar este projeto localmente para desenvolvimento ou teste:
     pip install -r requirements.txt
     ```
 
-4.  **Execute as migrações do Django (se aplicável):**
+4.  **Execute as migrações do Django:**
     ```bash
     python manage.py migrate
     ```
