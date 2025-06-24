@@ -1,19 +1,104 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import login, get_user_model
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib import messages
+from django.utils import timezone
+from datetime import timedelta
+from .forms import Verify2FACodeForm
+from .models import ActionToken, LoginCode
+from .utils import send_action_email, send_2fa_code_email
 
-# Create your views here.
+# Cuida da verificação de dois fatores (Identificado aqui como 2-factor authentication)
+def verify_2fa_view(request):
+
+    # Evita acesso direto...
+    try:
+        user_id = request.session["pre_2fa_user_id"]
+    except KeyError:
+        return redirect('Login')
+    
+    user = get_object_or_404(get_user_model(), id=user_id)
+
+    if request.method == 'POST':
+        form = Verify2FACodeForm(request.POST)
+        if form.is_valid():
+            code = form.cleaned_data['code']
+            empty_limit = timezone.now() - timedelta(minutes=10)
+            
+            val_cod = LoginCode.objects.filter(
+                user = user,
+                code = code,
+                is_used = False,
+                created_at__gte = empty_limit
+            ).first()
+            
+            if val_cod:
+                # Inutilizar já o código...
+                val_cod.is_used = True
+
+                val_cod.save()
+
+                login(request, user)
+
+                del request.session['pre_2fa_user_id']
+
+                return redirect('qrcode')
+            else:
+                messages.error(request, "Código inválido ou expirado.")
+    else:
+        form = Verify2FACodeForm()
+    
+    return render(request, 'accounts/emails/verify_2fa.html', {'form': form})
+        
+    
+
+def verify_action(request, token):
+    token_obj = get_object_or_404(ActionToken, token=token)
+
+    if token_obj.is_used:
+        messages.error(request, "Este link já foi utilizado e não é mais válido.")
+        return redirect("login")
+    
+    if token_obj.is_expired():
+        messages.error(request, "Este link de verificação expirou. Por favor, solicite um novo.")
+        return redirect("login")
+    
+    user = token_obj.user
+    action = token_obj.action_type
+    
+    if action == ActionToken.ActionTypes.ACCOUNT_ACTIVATION:
+        user.is_active = True
+        user.save()
+        login(request, user)
+        messages.success(request, "Sua conta foi ativada com sucesso! Bem-vindo(a)!")
+    
+    elif action == ActionToken.ActionTypes.ACCOUNT_DELETION:
+        user.delete()
+        messages.success(request, "Sua conta foi excluida permanentemente. Sentiremos sua falta!")
+
+    token_obj.is_used = True
+    token_obj.save()
+
+    return redirect("login")
+
 def login_user(request):
     if request.method == "POST":
-        username = request.POST['username']
-        password = request.POST['password']
-        user = authenticate(request, username=username, password=password)
-        if user is not None:
-            login(request, user)
-            return redirect('qrcode:gerar_zip_qrcodes')
+        form = AuthenticationForm(request, data=request.POST)
+
+        if form.is_valid():
+            user = form.get_user()
+            
+            login_code = LoginCode.objects.create(user=user)
+
+            print(f'DEBUG: O código de 2FA para {user.username} é {login_code.code}')
+
+            request.session['pre_2fa_user_id'] = user.id
+
+            return redirect('verify_2fa')
+        
         else:
-            messages.error(request, 'As credenciais fornecidas estão incorretas. Por favor, verifique nome de usuário e senha e tente novamente.')
-            return redirect('account:login')
+            messages.error(request, "Nome de usuário ou senha inválidos. Por favor tente novamente.")
     else:
-        context_render = {}
-        return render(request, 'accounts/login/loginpage.html', context_render)
+        form = AuthenticationForm()
+    
+    return render(request, "accounts/login/loginpage.html", {'form': form})

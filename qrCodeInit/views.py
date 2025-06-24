@@ -5,9 +5,13 @@ import qrcode
 from django.contrib import messages
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+
 
 from .forms import GeradorQrCodeZipForm
 
+# Responsavel por gerar os qrCodes e entregar para o user
+@login_required
 def gerar_zip_qrcodes(request: HttpRequest) -> HttpResponse:
     template_name = 'qrcodetpl/pages/qrCodeSequencial.html'
 

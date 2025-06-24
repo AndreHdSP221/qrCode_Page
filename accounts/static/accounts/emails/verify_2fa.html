@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código de Verificação 2FA</title>
+    <!--[if mso]>
+    <style>
+        .button-td {padding: 20px 0 !important;}
+        .button-a {border-radius: 50px !important;}
+    </style>
+    <![endif]-->
+    <style>
+        @media only screen and (max-width: 600px) {
+            .container {
+                width: 100% !important;
+                margin: 15px auto !important;
+            }
+
+            .header {
+                padding: 25px 15px !important;
+            }
+
+            .content {
+                padding: 25px 15px !important;
+            }
+
+            .footer {
+                padding: 20px 15px !important;
+            }
+
+            .code-container {
+                padding: 15px !important;
+            }
+
+            .user-greeting {
+                font-size: 22px !important;
+            }
+
+            .verification-code {
+                font-size: 32px !important;
+                padding: 15px 25px !important;
+            }
+        }
+    </style>
+</head>
+
+<body style="margin:0;padding:0;background-color:#F9F6F2;font-family:Arial,sans-serif;color:#5D4037;line-height:1.6;">
+    <center>
+        <table border="0" cellpadding="0" cellspacing="0" width="100%"
+            style="max-width:600px;margin:30px auto;background-color:#F9F6F2;">
+            <!-- Header -->
+            <tr>
+                <td align="center" bgcolor="#D7CCC8"
+                    style="padding:40px 20px;background:linear-gradient(135deg, #D7CCC8, #BCAAA4);text-align:center;color:#4E342E;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td
+                                style="font-size:32px;font-weight:700;letter-spacing:1px;margin-bottom:10px;font-family:Arial,sans-serif;">
+                                🔒 Verificação em Duas Etapas
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="opacity:0.9;font-weight:300;font-family:Arial,sans-serif;font-size:18px;">
+                                Segurança adicional para sua conta
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- Content -->
+            <tr>
+                <td bgcolor="#ffffff" style="padding:40px;background-color:#FFFDFA;">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%">
+                        <tr>
+                            <td
+                                style="font-size:24px;font-weight:600;margin-bottom:30px;color:#4E342E;font-family:Arial,sans-serif;">
+                                Olá, <span style="font-weight:600;color:#8D6E63;">{{
+                                    user.get_full_name|default:user.username }}</span>!
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="color:#5D4037;font-family:Arial,sans-serif;font-size:16px;">
+                                Recebemos uma solicitação de login em sua conta. Para completar o processo de
+                                autenticação em duas etapas, utilize o seguinte código de verificação:
+                            </td>
+                        </tr>
+
+                        <!-- Código de Verificação -->
+                        <tr>
+                            <td align="center" style="padding:30px 0;">
+                                <div style="background:#F5F0EB;border-radius:12px;display:inline-block;padding:5px;">
+                                    <div class="verification-code"
+                                        style="font-size:42px;font-weight:700;letter-spacing:8px;color:#8D6E63;padding:20px 40px;background:#FFFDFA;border-radius:8px;border:2px dashed #D7CCC8;">
+                                        {{ code }}
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td style="margin:20px 0;color:#5D4037;font-family:Arial,sans-serif;font-size:16px;">
+                                <p>Este código é válido por <span style="font-weight:600;color:#8D6E63;">10
+                                        minutos</span>. Após este período, será necessário solicitar um novo código.</p>
+                                <p>Se você não solicitou esta verificação, por favor, ignore este e-mail ou entre em
+                                    contato com nosso suporte imediatamente.</p>
+                            </td>
+                        </tr>
+
+                        <!-- Ação Alternativa -->
+                        <tr class="button-td">
+                            <td align="center" style="padding:20px 0;">
+                                <a href="{{ support_url }}" class="button-a"
+                                    style="display:inline-block;background:#F5F0EB;color:#8D6E63;text-decoration:none;padding:12px 30px;border-radius:50px;font-weight:600;font-size:16px;text-align:center;border:1px solid #D7CCC8;font-family:Arial,sans-serif;">
+                                    CONTATAR SUPORTE
+                                </a>
+                            </td>
+                        </tr>
+
+                        <!-- Mensagem de Segurança -->
+                        <tr>
+                            <td
+                                style="background:#F9E6E6;border-left:4px solid #C86B6B;padding:15px;border-radius:0 8px 8px 0;margin-top:35px;color:#8D6E63;font-size:14px;font-family:Arial,sans-serif;line-height:1.5;">
+                                <strong style="color:#C86B6B;">Proteja sua conta:</strong> Nunca compartilhe este código
+                                com ninguém. Nossa equipe nunca solicitará seus códigos de verificação.
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+
+            <!-- Footer -->
+            <tr>
+                <td bgcolor="#F5F0EB"
+                    style="padding:25px;text-align:center;color:#5D4037;font-size:14px;font-family:Arial,sans-serif;border-top:1px solid #E8DED6;">
+                    <p>© 2023 Sistema de Segurança. Todos os direitos reservados.</p>
+                    <p>Este é um e-mail automático, por favor não responda.</p>
+                    <p style="margin-top:15px;font-size:12px;color:#8D6E63;">
+                        Para sua segurança, este código expirará em 10 minutos
+                    </p>
+                </td>
+            </tr>
+        </table>
+    </center>
+</body>
+
+</html>
