@@ -6,9 +6,7 @@ class TwoFactorAuthMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
-        
         if 'pre_2fa_user_id' in request.session:
-            
             allowed_paths = [
                 reverse('accounts:verify_2fa'), 
                 reverse('accounts:logout')
