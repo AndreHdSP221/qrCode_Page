@@ -1,0 +1,27 @@
+{% extends "global/html/basetemplate.html" %}
+
+{% block title %}Verificação de Dois Fatores{% endblock title %}
+
+{% block content %}
+<div class="main-content center-container">
+    <h2>Verificação de Dois Fatores</h2>
+    <p>Enviamos um código de 6 dígitos para o seu e-mail. Por favor, insira-o abaixo.</p>
+    <p>O código expira em 10 minutos.</p>
+
+    <form action="{% url 'accounts:verify_2fa' %}" method="post" class="form-styled">
+        {% csrf_token %}
+        
+        {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                    <div class="message {{ message.tags }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        {{ form.as_p }}
+
+        <button type="submit" class="btn">Verificar Código</button>
+    </form>
+</div>
+{% endblock content %}

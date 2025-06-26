@@ -1,9 +1,11 @@
 from django.urls import path
 from . import views
 
-app_name = 'account'
+app_name = 'accounts'
 
 urlpatterns = [
     path('login/', views.login_user, name='login'),
-    path('verify/<uuid:token>/', views.verify_2fa_view, name="verify_2fa_view")
+    path('verify-2fa/', views.verify_2fa_view, name='verify_2fa'),
+    path('logout/', views.logout_view, name='logout'),
+    path('verify-action/<uuid:token>/', views.verify_action, name='verify_action'),
 ]

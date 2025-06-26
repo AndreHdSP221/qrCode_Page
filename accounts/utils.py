@@ -11,14 +11,15 @@ def send_2fa_code_email(user, code):
     context = {
         'user': user,
         'code': code,
-        'temp_expirar': 10,
     }
 
-    html_message = render_to_string('accounts/emails/verify_2fa.html', context)
+    html_message = render_to_string(
+        'accounts/emails/dj_verify_2fa.html', 
+        context=context
+    )
 
     plain_message = strip_tags(html_message)
     from_email = settings.DEFAULT_FROM_EMAIL
-
     list_desti = [user.email]
 
     send_mail(
@@ -30,9 +31,8 @@ def send_2fa_code_email(user, code):
     )
     
 def send_action_email(request, user, action_type_enum):
-    token_obj = ActionToken.objects.create(user=user , action_type=action_type_enum)
-
-    """ Url da verificação """
+    token_obj = ActionToken.objects.create(user=user, action_type=action_type_enum)
+    
     verification_url = request.build_absolute_uri(
         reverse('accounts:verify_action', kwargs={'token': token_obj.token})
     )
@@ -43,7 +43,10 @@ def send_action_email(request, user, action_type_enum):
         'action_type': token_obj.get_action_type_display()
     }
 
-    html_message = render_to_string('accounts/emails/action_verification.html', context)
+    html_message = render_to_string(
+        'accounts/emails/dj_action_verification.html', 
+        context=context
+    )
     plain_message = strip_tags(html_message)
 
     send_mail(
