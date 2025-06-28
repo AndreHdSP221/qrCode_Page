@@ -26,3 +26,10 @@ console_command = '/code/manage.py shell'
 [[statics]]
   guest_path = '/code/static'
   url_prefix = '/static/'
+
+# fly.toml
+
+# ...
+
+[deploy]
+  release_command = "sh -c 'python manage.py migrate --no-input && python manage.py create_initial_superuser'"

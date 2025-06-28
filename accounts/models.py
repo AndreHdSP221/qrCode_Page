@@ -9,7 +9,7 @@ from django.contrib.auth.models import AbstractUser
 class CustomUser(AbstractUser):
     groups = models.ManyToManyField(
         'auth.Group',
-        related_name='customuser_set',  # Nome único para a relação reversa
+        related_name='customuser_set',
         blank=True,
         help_text='The groups this user belongs to. A user will get all permissions granted to each of their groups.',
         related_query_name='user',
@@ -21,6 +21,8 @@ class CustomUser(AbstractUser):
         help_text='Specific permissions for this user.',
         related_query_name='user',
     )
+
+    fullname = models.CharField("Nome completo", max_length=255)
 
     def __str__(self):
         return self.email
@@ -43,7 +45,7 @@ class LoginCode(models.Model):
     def __str__(self):
         return f'Código para {self.user}'
     
-
+# Em Desenvolvimento
 class ActionToken(models.Model):
     class ActionTypes(models.TextChoices):
         ACCOUNT_ACTIVATION = 'ACCOUNT_ACTIVATION', 'Ativação de Conta'

@@ -5,7 +5,7 @@
 {% block content %}
 <div class="main-content center-container">
     <h2>Verificação de Dois Fatores</h2>
-    <p>Enviamos um código de 6 dígitos para o seu e-mail. Por favor, insira-o abaixo.</p>
+    <p>Enviamos um código de 6 dígitos para o seu e-mail. Se não o encontrar, verifique a pasta **Spam**. Digite-o no campo abaixo.</p>
     <p>O código expira em 10 minutos.</p>
 
     <form action="{% url 'accounts:verify_2fa' %}" method="post" class="form-styled">

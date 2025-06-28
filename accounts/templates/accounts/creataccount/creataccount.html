@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro Simples</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f4e9 0%, #e7e0d6 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 15px 40px rgba(139, 87, 42, 0.2);
+        }
+
+        .header {
+            background: linear-gradient(135deg, #8b572a 0%, #b98c6d 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -80px;
+            left: -30px;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+
+        .signup-section {
+            padding: 40px;
+        }
+
+        .signup-form .form-group {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .signup-form label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5d4037;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .signup-form input {
+            width: 100%;
+            padding: 16px 16px 16px 48px;
+            /* Padding mais equilibrado */
+            border: 2px solid #d7ccc8;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: #fbf8f5;
+            height: 54px;
+            /* Altura fixa para melhor alinhamento */
+        }
+
+        .signup-form input:focus {
+            border-color: #8b572a;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(139, 87, 42, 0.2);
+        }
+
+        /* Centralização vertical dos ícones */
+        .input-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            /* Posiciona no meio verticalmente */
+            transform: translateY(-50%);
+            /* Ajusta precisão do centro */
+            color: #8b572a;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            /* Altura completa para alinhamento perfeito */
+        }
+
+        .btn-signup {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(90deg, #8b572a 0%, #b98c6d 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(139, 87, 42, 0.25);
+            margin-top: 10px;
+        }
+
+        .btn-signup:hover {
+            background: linear-gradient(90deg, #7a4a23 0%, #a87c5f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(139, 87, 42, 0.35);
+        }
+
+        .login-link {
+            text-align: center;
+            margin-top: 25px;
+            color: #5d4037;
+            font-size: 1rem;
+        }
+
+        .login-link a {
+            color: #8b572a;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        .social-login {
+            margin-top: 30px;
+        }
+
+        .social-title {
+            text-align: center;
+            color: #a1887f;
+            font-size: 0.95rem;
+            margin-bottom: 15px;
+            position: relative;
+        }
+
+        .social-title::before,
+        .social-title::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 30%;
+            height: 1px;
+            background: #d7ccc8;
+        }
+
+        .social-title::before {
+            left: 0;
+        }
+
+        .social-title::after {
+            right: 0;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+
+        .social-btn {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid #d7ccc8;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 8px rgba(139, 87, 42, 0.15);
+        }
+
+        .social-btn i {
+            font-size: 1.2rem;
+            color: #5d4037;
+        }
+
+        /* Animação de contagem */
+        .user-count {
+            display: inline-block;
+            font-weight: 700;
+            color: #f8f4e9;
+            position: relative;
+            padding: 0 5px;
+        }
+
+        /* Responsividade */
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+            }
+
+            .header,
+            .signup-section {
+                padding: 30px 20px;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .header p {
+                font-size: 1rem;
+            }
+
+            .social-title::before,
+            .social-title::after {
+                width: 25%;
+            }
+
+            .signup-form input {
+                padding: 14px 14px 14px 42px;
+                /* Ajuste para mobile */
+                height: 50px;
+            }
+
+            .input-icon {
+                left: 14px;
+                font-size: 16px;
+            }
+        }
+
+        /* Animação de contador */
+        @keyframes countAnimation {
+            from {
+                transform: translateY(10px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        /* Melhorias visuais */
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-container {
+            position: relative;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>Crie sua conta</h1>
+                <p>Venha abelhar junto com mais de <span class="user-count">10.000</span> usuários</p>
+            </div>
+        </div>
+
+        <div class="signup-section">
+            <form class="signup-form" method="POST" action=".">
+                {% csrf_token %}
+                
+                <div class="form-group">
+
+                    {{ form.username.label_tag }}
+
+                    <div class="input-container">
+
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+
+                        {{ form.username }}
+
+                    </div>
+
+                    {% if form.username.errors %}
+                        <div class="error-message"> {{ form.username.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="form-group">
+
+                    {{ form.fullname.label_tag }}
+
+                    <div class="input-container">
+
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+
+                        {{ form.fullname }}
+
+                    </div>
+
+                    {% if form.fullname.errors %}
+                        <div class="error-message"> {{ form.fullname.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+                
+                <div class="form-group">
+
+                    {{ form.email.label_tag }}
+
+                    <div class="input-container">
+
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+
+                        {{ form.email }}
+
+                    </div>
+
+                    {% if form.email.errors %}
+                        <div class="error-message"> {{ form.email.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="form-group">
+
+                    {{ form.password1.label_tag }}
+
+                    <div class="input-container">
+
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+
+                        {{ form.password1 }}
+
+                    </div>
+
+                    {% if form.password1.errors %}
+                        <div class="error-message"> {{ form.password1.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <div class="form-group">
+
+                    {{ form.password2.label_tag }}
+
+                    <div class="input-container">
+
+                        <div class="input-icon">
+                            <i class="fas fa-user"></i>
+                        </div>
+
+                        {{ form.password2 }}
+
+                    </div>
+
+                    {% if form.password2.errors %}
+                        <div class="error-message"> {{ form.password2.errors }}
+                        </div>
+                    {% endif %}
+
+                </div>
+
+                <button type="submit" class="btn-signup">Criar Conta</button>
+
+                <div class="login-link">
+                    Já tem uma conta? <a href="{% url "accounts:login" %}">Faça login</a>
+                </div>
+            </form>
+
+            <div class="social-login">
+                <div class="social-title">Ou cadastre-se com</div>
+
+                <div class="social-buttons">
+                    <div class="social-btn">
+                        <i class="fab fa-google"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-facebook-f"></i>
+                    </div>
+                    <div class="social-btn">
+                        <i class="fab fa-apple"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
