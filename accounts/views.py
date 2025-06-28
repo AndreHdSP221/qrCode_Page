@@ -51,23 +51,24 @@ def verify_2fa_view(request):
         form = Verify2FACodeForm(request.POST)
         if form.is_valid():
             code = form.cleaned_data['code']
-            empty_limit = timezone.now() - timedelta(minutes=10)
+            expiration_threshold = timezone.now() - timedelta(minutes=10)
             
-            val_cod = LoginCode.objects.filter(
+            valid_code = LoginCode.objects.filter(
                 user=user,
                 code=code,
                 is_used=False,
-                created_at__gte=empty_limit
-
+                created_at__gte=expiration_threshold
             ).first()
             
-            if val_cod:
-                val_cod.is_used = True
-                val_cod.save()
+            if valid_code:
+                del request.session['pre_2fa_user_id']
+
+                valid_code.is_used = True
+                valid_code.save()
 
                 login(request, user)
-
-                del request.session['pre_2fa_user_id']
+                
+                messages.success(request, f"Autenticação bem-sucedida. Bem-vindo(a), {user.username}!")
                 return redirect('qrCodeInit:gerar_zip_qrcodes') 
             else:
                 messages.error(request, "Código inválido ou expirado.")
