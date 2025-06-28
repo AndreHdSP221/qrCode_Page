@@ -105,6 +105,7 @@ def login_user(request):
 
     return render(request, "accounts/login/loginpage.html", context)
 
+# Em implementação
 def verify_action(request, token):
     token_obj = get_object_or_404(ActionToken, token=token)
 
@@ -122,16 +123,21 @@ def verify_action(request, token):
     if action == ActionToken.ActionTypes.ACCOUNT_ACTIVATION:
         user.is_active = True
         user.save()
-
         login(request, user)
-
         messages.success(request, "Sua conta foi ativada com sucesso! Bem-vindo(a)!")
+        
+        token_obj.is_used = True
+        token_obj.save()
+
+        return redirect("qrcode:gerar_zip_qrcodes")
     
     elif action == ActionToken.ActionTypes.ACCOUNT_DELETION:
+        username = user.get_username()
         user.delete()
-        messages.success(request, "Sua conta foi excluida permanentemente. Sentiremos sua falta!")
+        
+        messages.success(request, f"A conta para '{username}' foi excluída permanentemente.")
+        
+        return redirect("accounts:login")
 
-    token_obj.is_used = True
-    token_obj.save()
-
+    messages.warning(request, "Ação não reconhecida.")
     return redirect("accounts:login")

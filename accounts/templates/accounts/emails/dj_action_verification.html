@@ -5,12 +5,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Confirmação de Ação</title>
-    <!--[if mso]>
-    <style>
-        .button-td {padding: 20px 0 !important;}
-        .button-a {border-radius: 50px !important;}
-    </style>
-    <![endif]-->
     <style>
         @media only screen and (max-width: 600px) {
             .container {
@@ -45,7 +39,6 @@
     <center>
         <table border="0" cellpadding="0" cellspacing="0" width="100%"
             style="max-width:600px;margin:30px auto;background-color:#F9F6F2;">
-            <!-- Header -->
             <tr>
                 <td align="center" bgcolor="#D7CCC8"
                     style="padding:40px 20px;background:linear-gradient(135deg, #D7CCC8, #BCAAA4);text-align:center;color:#4E342E;">
@@ -65,75 +58,67 @@
                 </td>
             </tr>
 
-            <!-- Content -->
             <tr>
                 <td bgcolor="#ffffff" style="padding:40px;background-color:#FFFDFA;">
                     <table border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tr>
                             <td
                                 style="font-size:24px;font-weight:600;margin-bottom:30px;color:#4E342E;font-family:Arial,sans-serif;">
-                                Olá, <span style="font-weight:600;color:#8D6E63;">{{
-                                    user.fullname|default:user.username }}</span>!
+                                Olá, <span style="font-weight:600;color:#8D6E63;">{{ user.fullname|default:user.username }}</span>!
                             </td>
                         </tr>
                         <tr>
-                            <td style="color:#5D4037;font-family:Arial,sans-serif;font-size:16px;">
+                            <td style="color:#5D4037;font-family:Arial,sans-serif;font-size:16px;padding-top:20px;padding-bottom:20px;">
                                 Recebemos uma solicitação para realizar a seguinte ação em sua conta:
                             </td>
                         </tr>
                         <tr>
-                            <td
-                                style="background:#F5F0EB;border-left:4px solid #A1887F;padding:20px;border-radius:0 8px 8px 0;margin:25px 0;font-family:Arial,sans-serif;">
-                                <div style="font-weight:500;color:#5D4037;letter-spacing:0.5px;">TIPO DE AÇÃO:</div>
-                                <div style="font-size:20px;color:#8D6E63;font-weight:600;margin-top:10px;">{{
-                                    action_type }}</div>
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background:#F5F0EB;border-left:4px solid #A1887F;border-radius:0 8px 8px 0;margin:10px 0;">
+                                    <tr>
+                                        <td style="padding:20px;">
+                                            <div style="font-weight:500;color:#5D4037;letter-spacing:0.5px;text-transform:uppercase;font-size:12px;">Tipo de Ação</div>
+                                            <div style="font-size:20px;color:#8D6E63;font-weight:600;margin-top:5px;">{{ action_type }}</div>
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
                         <tr>
-                            <td style="margin:30px 0;color:#5D4037;font-family:Arial,sans-serif;font-size:16px;">
-                                <p>Para confirmar esta ação, clique no botão abaixo. Este link é válido por <span
-                                        style="font-weight:600;color:#8D6E63;">1 hora</span>.</p>
-                                <p>Se você não reconhece esta solicitação, ignore este e-mail ou entre em contato com
-                                    nosso suporte.</p>
+                            <td style="padding-top:20px;padding-bottom:10px;color:#5D4037;font-family:Arial,sans-serif;font-size:16px;">
+                                <p style="margin:0;">Para confirmar esta ação, clique no botão abaixo. Este link é válido por <span style="font-weight:600;color:#8D6E63;">1 hora</span>.</p>
+                                <p style="margin-top:10px;">Se você não reconhece esta solicitação, ignore este e-mail com segurança.</p>
                             </td>
                         </tr>
                         <tr class="button-td">
                             <td align="center" style="padding:20px 0;">
-                                <!--[if mso]>
-                                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="{{ verification_url }}" style="height:52px;v-text-anchor:middle;width:220px;" arcsize="50%" strokecolor="#A1887F" fillcolor="#A1887F">
-                                    <w:anchorlock/>
-                                    <center style="color:#ffffff;font-family:Arial,sans-serif;font-size:16px;font-weight:600;">CONFIRMAR AÇÃO</center>
-                                </v:roundrect>
-                                <![endif]-->
                                 <a href="{{ verification_url }}" class="button-a"
-                                    style="display:inline-block;background:linear-gradient(135deg, #A1887F, #8D6E63);color:white;text-decoration:none;padding:16px 36px;border-radius:50px;font-weight:600;font-size:16px;text-align:center;box-shadow:0 4px 10px rgba(141, 110, 99, 0.2);font-family:Arial,sans-serif;">
+                                    style="display:inline-block;background:linear-gradient(135deg, #A1887F, #8D6E63);color:white;text-decoration:none;padding:16px 36px;border-radius:50px;font-weight:600;font-size:16px;text-align:center;box-shadow:0 4px 10px rgba(141, 110, 99, 0.2);mso-hide:all;">
                                     CONFIRMAR AÇÃO
                                 </a>
                             </td>
                         </tr>
                         <tr>
-                            <td
-                                style="background:#F9E6E6;border-left:4px solid #C86B6B;padding:15px;border-radius:0 8px 8px 0;margin-top:35px;color:#8D6E63;font-size:14px;font-family:Arial,sans-serif;line-height:1.5;">
-                                <strong style="color:#C86B6B;">Importante:</strong> Nunca compartilhe este link com
-                                ninguém. Nossa equipe nunca solicitará sua senha ou códigos de acesso.
+                            <td>
+                                <table border="0" cellpadding="0" cellspacing="0" width="100%" style="background:#F9E6E6;border-left:4px solid #C86B6B;border-radius:0 8px 8px 0;margin-top:15px;">
+                                    <tr>
+                                        <td style="padding:15px;color:#8D6E63;font-size:14px;font-family:Arial,sans-serif;line-height:1.5;">
+                                            <strong style="color:#C86B6B;">Importante:</strong> Nunca compartilhe este link com
+                                            ninguém. Nossa equipe nunca solicitará sua senha ou códigos de acesso.
+                                        </td>
+                                    </tr>
+                                </table>
                             </td>
                         </tr>
                     </table>
                 </td>
             </tr>
 
-            <!-- Footer -->
             <tr>
                 <td bgcolor="#F5F0EB"
                     style="padding:25px;text-align:center;color:#5D4037;font-size:14px;font-family:Arial,sans-serif;border-top:1px solid #E8DED6;">
-                    <p>© 2023 Sistema de Segurança. Todos os direitos reservados.</p>
-                    <p>Este é um e-mail automático, por favor não responda.</p>
-                    <p style="margin-top:15px;font-size:12px;color:#8D6E63;">
-                        <a href="#" style="color:#8D6E63;text-decoration:none;margin:0 10px;">Política de
-                            Privacidade</a> |
-                        <a href="#" style="color:#8D6E63;text-decoration:none;margin:0 10px;">Termos de Uso</a> |
-                        <a href="#" style="color:#8D6E63;text-decoration:none;margin:0 10px;">Suporte</a>
-                    </p>
+                    <p style="margin:0 0 10px 0;">© 2025 Sistema de Segurança. Todos os direitos reservados.</p>
+                    <p style="margin:0 0 10px 0;">Este é um e-mail automático, por favor não responda.</p>
                 </td>
             </tr>
         </table>
