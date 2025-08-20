@@ -5,8 +5,13 @@
         {{ form.codigo_base }}
     </div>
     <div>
-        {{ form.quantidade.label_tag }}
-        {{ form.quantidade }}
+        {{ form.quantidadeInicial.label_tag }}
+        {{ form.quantidadeInicial }}
+    </div>
+
+    <div>
+        {{ form.quantidadeFinal.label_tag }}
+        {{ form.quantidadeFinal }}
     </div>
 
     <button type="submit">Gerar QR Codes</button>
