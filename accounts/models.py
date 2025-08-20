@@ -51,7 +51,7 @@ class ActionToken(models.Model):
         ACCOUNT_ACTIVATION = 'ACCOUNT_ACTIVATION', 'Ativação de Conta'
         ACCOUNT_DELETION = 'ACCOUNT_DELETION', 'Exclusão de Conta'
         ACCOUNT_LOGIN = "ACCOUNT_LOGIN", "Login de Conta"
-        PASSWORD_RESET = 'PASSWORD_RESET', 'Recuperação de Senha'
+        PASSWORD_RESET = 'PASSWORD_RESET', 'Recuperação de Senha',
 
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     token = models.UUIDField(default=uuid.uuid4, editable=False, unique=True)

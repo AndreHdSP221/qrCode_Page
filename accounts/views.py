@@ -106,7 +106,6 @@ def login_user(request):
 
     return render(request, "accounts/login/loginpage.html", context)
 
-# Em implementação
 def verify_action(request, token):
     token_obj = get_object_or_404(ActionToken, token=token)
 

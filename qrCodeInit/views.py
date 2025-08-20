@@ -50,7 +50,3 @@ def gerar_zip_qrcodes(request: HttpRequest) -> HttpResponse:
     except Exception as e:
         messages.error(request, f"Ocorreu um erro inesperado: {e}")
         return render(request, template_name, {'form': form})
-
-
-def qr_code_view(request):
-    return render(request, 'qrcodetpl/pages/qrCodeSequencial.html')
